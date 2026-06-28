@@ -1,4 +1,4 @@
-# SAIL-NER: Syntax and Structure-Aware InLegalBERT for Indian Legal Named Entity Recognition
+# Syntax and Structure-Aware InLegalBERT for Indian Legal Named Entity Recognition
 
 
 ## Overview
