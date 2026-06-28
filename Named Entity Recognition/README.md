@@ -36,7 +36,7 @@ NER/
 │   └── README.md
 │
 └── architecture/                       # Architecture documentation
-    └── model_architecture.md
+    └── readme.md
 ```
 
 ## Architectures & Results
