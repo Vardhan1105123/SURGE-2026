@@ -83,9 +83,7 @@ def main():
         use_cache=False 
     )
 
-    # ==========================================
-    # LoRA CONFIGURATION (For 8GB VRAM Survival)
-    # ==========================================
+    # LoRA Configuration for Memory-Efficient Fine-Tuning
     print("Applying LoRA to the model...")
     lora_config = LoraConfig(
         task_type=TaskType.SEQ_2_SEQ_LM,
@@ -96,8 +94,8 @@ def main():
     )
     
     model = get_peft_model(model, lora_config)
-    model.print_trainable_parameters() # This will show we are only training ~1% of parameters!
-    # ==========================================
+    model.print_trainable_parameters() # Output ratio of trainable vs frozen parameters
+
 
     # Configure VRAM-friendly training arguments
     training_args = Seq2SeqTrainingArguments(

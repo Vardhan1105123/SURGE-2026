@@ -91,8 +91,20 @@ def main():
     optimized_weights = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'weights', 'dpo_baseline', 'final'))
     rhetorical_weights = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'weights', 'dpo_rhetorical', 'final'))
 
-    evaluate_model(optimized_weights, test_dataset_optimized, "Optimized DPO")
-    evaluate_model(rhetorical_weights, test_dataset_rhetorical, "Rhetorical DPO")
+    res_opt = evaluate_model(optimized_weights, test_dataset_optimized, "Optimized DPO")
+    res_rhet = evaluate_model(rhetorical_weights, test_dataset_rhetorical, "Rhetorical DPO")
+    
+    results = {
+        "Optimized DPO": res_opt,
+        "Rhetorical DPO": res_rhet
+    }
+    
+    out_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'analysis', 'dpo_empirical_results.json'))
+    os.makedirs(os.path.dirname(out_file), exist_ok=True)
+    import json
+    with open(out_file, 'w') as f:
+        json.dump(results, f, indent=4)
+    print(f"\nSaved metrics to {out_file}")
 
 if __name__ == "__main__":
     main()

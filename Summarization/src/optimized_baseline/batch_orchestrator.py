@@ -6,14 +6,10 @@ import sys
 TOTAL_STEPS = 2650
 BATCH_SIZE = 500
 COOLDOWN_MINUTES = 30
-current_steps = 0 # Starting completely fresh on the full dataset
-
-log_file_path = "logs/orchestrator.log"
+current_steps = 0 # Starting completely fresh on the full dataset (change if you want to resume from a specific checkpoint)
 
 def log(msg):
     print(msg)
-    with open(log_file_path, "a") as f:
-        f.write(msg + "\n")
 
 log("=== Starting Automated Batch Orchestrator ===")
 log(f"Target Total Steps: {TOTAL_STEPS}")
@@ -29,19 +25,9 @@ while current_steps < TOTAL_STEPS:
     
     process = subprocess.Popen(
         [sys.executable, "src/training/train_optimized_baseline.py"],
-        env=env,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True
+        env=env
     )
     
-    # Write the output to a specific batch log file
-    batch_log = f"logs/train_optimized_batch_{next_steps}.log"
-    with open(batch_log, "w") as f:
-        for line in process.stdout:
-            f.write(line)
-            # We don't print to console because it runs in background
-            
     process.wait()
     
     # Check if checkpoint exists

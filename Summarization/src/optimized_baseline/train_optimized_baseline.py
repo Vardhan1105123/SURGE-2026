@@ -86,31 +86,25 @@ def main():
         use_cache=False 
     )
 
-    # ==========================================
-    # COVERAGE PENALTY (Inference / Generation limits)
-    # ==========================================
+    # Coverage Penalty (Inference / Generation limits)
     # These settings enforce a penalty against generating the same n-grams or tokens
     # effectively acting as a coverage penalty during evaluation.
     model.config.repetition_penalty = 1.5
     model.config.no_repeat_ngram_size = 3
     model.config.max_length = 1024
-    # ==========================================
-
-    # ==========================================
-    # EXPANDED LoRA CONFIGURATION
-    # ==========================================
+    # LoRA Configuration
     print("Applying Expanded LoRA to the model...")
     lora_config = LoraConfig(
         task_type=TaskType.SEQ_2_SEQ_LM,
-        r=16,                                       # DECREASED Rank
-        lora_alpha=32,                              # DECREASED Scaling factor
+        r=16,                                       # Rank of the update matrices
+        lora_alpha=32,                              # Scaling factor
         lora_dropout=0.1,
-        target_modules=["q_proj", "k_proj", "v_proj"] # TARGETING QKV ONLY
+        target_modules=["q_proj", "k_proj", "v_proj"] # Target modules for LoRA application to improve feature extraction
     )
     
     model = get_peft_model(model, lora_config)
     model.print_trainable_parameters() 
-    # ==========================================
+
     
     output_weights_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'weights', 'optimized_baseline_small'))
 
@@ -122,7 +116,7 @@ def main():
         per_device_train_batch_size=1,        
         per_device_eval_batch_size=1,
         gradient_accumulation_steps=8,        
-        dataloader_num_workers=0,             # CHANGED TO 0 TO PREVENT RAM EXHAUSTION ON WINDOWS
+        dataloader_num_workers=0,             # Set to 0 to bypass multiprocessing memory overhead on Windows
         bf16=True,
         tf32=True,
         save_steps=500,
@@ -133,7 +127,7 @@ def main():
         learning_rate=3e-4,
         lr_scheduler_type="cosine",           # COSINE DECAY added
         warmup_ratio=0.1,                     # 10% WARMUP added
-        optim="adamw_torch_fused",            # FUSED ADAMW FOR FASTER TRAINING ON L4 GPU
+        optim="adamw_torch_fused",            # Use fused AdamW optimizer to accelerate training throughput
     )
 
     # Initialize Trainer

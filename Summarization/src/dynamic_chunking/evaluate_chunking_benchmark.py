@@ -50,7 +50,7 @@ def main():
     ]
 
     base_weights_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'weights'))
-    out_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'chunking_empirical_results.json'))
+    out_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'analysis', 'chunking_empirical_results.json'))
     
     print("Loading metrics...")
     rouge = evaluate.load('rouge')
@@ -75,12 +75,12 @@ def main():
             print(f"Skipping {name}, weights not found at {weights_path}")
             continue
 
-        print(f"\n======================================")
+        print(f"\n" + "-" * 50)
         print(f"Evaluating: {name}")
-        print(f"======================================")
+        print("-" * 50)
 
-        # We pass use_tagging=False ALWAYS to prevent spacy imports crashing the script.
-        # We manually feed the pre-tagged text instead!
+        # Set use_tagging=False to prevent spaCy import conflicts in the legalsum environment.
+        # Manually provide the pre-tagged text to bypass the automated OpenNYAI pipeline.
         summarizer = LegalChunkingSummarizer(weights_dir=weights_path, use_tagging=False)
         
         if name not in results:

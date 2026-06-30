@@ -1,0 +1,18 @@
+{
+    "Optimized DPO": {
+        "rouge": {
+            "rouge1": 0.4278,
+            "rouge2": 0.2055,
+            "rougeL": 0.2162
+        },
+        "bertscore": 0.8093
+    },
+    "Rhetorical DPO": {
+        "rouge": {
+            "rouge1": 0.4618,
+            "rouge2": 0.2267,
+            "rougeL": 0.2345
+        },
+        "bertscore": 0.8117
+    }
+}

@@ -33,12 +33,9 @@ def main():
     ]
 
     base_weights_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'weights'))
-    output_file = r"C:\Users\samba\.gemini\antigravity\brain\65b10c10-535e-480c-9673-8ae8ea226dea\chunking_results.md"
-
-    with open(output_file, 'w', encoding='utf-8') as f:
-        f.write("# Dynamic Chunking Results on Long Document\n\n")
-        f.write(f"**Document**: `{longest_file}`\n")
-        f.write(f"**Length**: {max_len} characters\n\n")
+    print("# Dynamic Chunking Results on Long Document\n")
+    print(f"**Document**: `{longest_file}`")
+    print(f"**Length**: {max_len} characters\n")
 
     for model_info in models_to_test:
         name = model_info["name"]
@@ -54,10 +51,8 @@ def main():
         
         try:
             summary = summarizer.summarize(raw_text)
-            
-            with open(output_file, 'a', encoding='utf-8') as f:
-                f.write(f"## {name}\n")
-                f.write(summary + "\n\n")
+            print(f"\n## {name}")
+            print(summary + "\n")
         except Exception as e:
             print(f"Error during {name}: {e}")
             

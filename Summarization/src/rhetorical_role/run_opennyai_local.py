@@ -94,7 +94,7 @@ def process_dataset(predictor, input_dir, output_dir):
 
 if __name__ == "__main__":
     print("Initializing OpenNYAI pipeline...")
-    # Switched back to use_gpu=True for single-threaded processing
+    # Enable GPU inference for single-threaded execution to improve extraction speed
     predictor = RhetoricalRolePredictor(use_gpu=True, verbose=False)
     
     raw_data_root = os.path.join("data", "raw", "IN-Abs")
@@ -111,6 +111,4 @@ if __name__ == "__main__":
         print("Dataset saved to data/processed/IN-Abs_Rhetorical/")
     except BaseException as e:
         import traceback
-        with open("rhetorical_crash_debug.log", "w") as f:
-            f.write(traceback.format_exc())
-        print(f"Error: Wrote traceback to rhetorical_crash_debug.log")
+        print(f"Error occurred:\n{traceback.format_exc()}")
